@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       wp-book
  * Plugin URI:        https://example.com/plugins/the-basics/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Organises book records.
  * Version:           1.0.0
  * Author:            Vibhav Salelkar
  * Author URI:        https://author.example.com/
