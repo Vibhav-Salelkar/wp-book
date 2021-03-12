@@ -174,7 +174,7 @@ class Wp_Book_Admin {
 	/* Meta box setup function. */
 	public function wb_book_meta_boxes_setup() {
 		/* Add meta boxes on the 'add_meta_boxes' hook. Note add_action here wont work so I used this alternate way */
-		add_meta_box("wb-about-book", "Book Details", array($this, "wb_about_book_meta_box"), "book", "side", "default");
+		add_meta_box("wb-about-book", __('Book Details', 'wb_domain'), array($this, "wb_about_book_meta_box"), "book", "side", "default");
 	}
 
 	/* Display the book meta box. */
