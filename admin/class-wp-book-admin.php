@@ -169,6 +169,45 @@ class Wp_Book_Admin {
 		  'query_var' => true,
 		  'rewrite' => array( 'slug' => 'book-tag' ),
 		));
-	  }
+	}
 
+	/* Meta box setup function. */
+	public function wb_book_meta_boxes_setup() {
+		/* Add meta boxes on the 'add_meta_boxes' hook. Note add_action here wont work so I used this alternate way */
+		add_meta_box("wb-about-book", "Book Details", array($this, "wb_about_book_meta_box"), "book", "side", "default");
+	}
+
+	/* Display the book meta box. */
+	public function wb_about_book_meta_box( $post ) { ?>
+	
+		<?php wp_nonce_field( basename( __FILE__ ), 'wb_about_book_nonce' ); ?>
+	  
+		<p>
+		  <label for="wb-book-author"><?php _e( "Author Name", 'wb_domain' ); ?></label>
+		  <br />
+		  <input class="widefat" type="text" name="wb-book-author" id="wb-book-author" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_author', true ) ); ?>" size="30" />
+		</p>
+		<p>
+		  <label for="wb-book-price"><?php _e("Price", 'wb_domain' ); ?></label>
+		  <br />
+		  <input class="widefat" type="text" name="wb-book-price" id="wb-book-price" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_price', true ) ); ?>" size="30" />
+		</p>
+		<p>
+		  <label for="wb-book-publisher"><?php _e( "Publisher", 'wb_domain' ); ?></label>
+		  <br />
+		  <input class="widefat" type="text" name="wb-book-publisher" id="wb-book-publisher" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_publisher', true ) ); ?>" size="30" />
+		</p>
+		<p>
+		  <label for="wb-book-year"><?php _e( "Year", 'wb_domain' ); ?></label>
+		  <br />
+		  <input class="widefat" type="text" name="wb-book-year" id="wb-book-year" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_year', true ) ); ?>" size="30" />
+		</p>
+		<p>
+		  <label for="wb-book-edition"><?php _e( "Edition", 'wb_domain' ); ?></label>
+		  <br />
+		  <input class="widefat" type="text" name="wb-book-edition" id="wb-book-edition" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_edition', true ) ); ?>" size="30" />
+		</p>
+	  <?php 
+	  }
 }
+?>

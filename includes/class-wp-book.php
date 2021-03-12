@@ -156,9 +156,15 @@ class Wp_Book {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		//creates custom post type
 		$this->loader->add_action('init', $plugin_admin, 'wb_custom_post_type');
+		//creates custom heirarchical category
 		$this->loader->add_action( 'init', $plugin_admin, 'wb_register_taxonomy_book',0);
+		// creates custom non hierarchical tag
 		$this->loader->add_action( 'init', $plugin_admin, 'wb_nonhierarchical_taxonomy_book', 0 );
+		/* Fire our meta box setup function on the book editor screen. */
+		$this->loader->add_action( 'load-post.php', $plugin_admin, 'wb_book_meta_boxes_setup' );
+		$this->loader->add_action( 'load-post-new.php', $plugin_admin, 'wb_book_meta_boxes_setup' );
 	}
 
 	/**
