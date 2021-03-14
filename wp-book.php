@@ -38,6 +38,15 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'WP_BOOK_VERSION', '1.0.0' );
 
 /**
+ * Global Variables
+ */
+$defaults = array(
+    'currency' => 'INR',
+    'num_of_books' => '5',
+);
+$book_options = get_option( 'book_settings', $defaults );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wp-book-activator.php
  */

@@ -286,5 +286,59 @@ class Wp_Book_Admin {
         
         return;
     }
+
+	public function wb_custom_settings_page() {
+ 
+        add_menu_page( __( 'Book Settings', 'wb_domain' ), __( 'Book Settings', 'wb_domain' ), 'manage_options', 'book-settings', array($this,'wb_render_settings_page'),
+            'dashicons-admin-page');
+    }
+
+	public function wb_register_settings() {
+
+		register_setting( 'book-settings-group', 'book_settings' );
+        register_setting( 'book-widget-settings-group', 'book_widget_settings' );
+    }
+
+	public function wb_render_settings_page() {
+		global $book_options;
+	   
+		$currencies = array( 'INR', 'USD', 'EUR' ); ?>
+		
+		<h2><?php _e( 'Books Menu', 'wb_domain' ); ?></h2>
+
+			<form method="post" action="options.php">
+		   
+			<?php settings_fields( 'book-settings-group' ); ?>
+			
+			<div>
+			<p>
+				<label class="description" for="book_settings[currency]"> <?php _e( 'Select currency', 'wb_domain' ); ?>: </label>
+			   
+				<select id="book_settings[currency]" name="book_settings[currency]">
+				<?php
+					$selected_currency = esc_attr( $book_options[ 'currency' ] );
+				foreach ( $currencies as $currency ) {
+					if ( $selected_currency != $currency ) {
+						echo '<option value="' . $currency . '">' . $currency . '</option>';
+					} else {
+						echo '<option selected value="' . $currency . '">' . $currency . '</option>';
+					}
+				}
+				?>
+				</select>
+			</p>
+			<p>
+				<label class="description" for="book_settings[num_of_books]"> <?php _e( 'Number of Books Per Page', 'wb_domain' ); ?>: </label>
+				<input type="number" min="0" max="100" id="book_settings[num_of_books]" name="book_settings[num_of_books]" value="<?php esc_attr_e( $book_options[ 'num_of_books' ] ); ?>"/>
+			</p>
+			<p class="submit">
+				<input type="submit" class="button-primary" value="Save Options" />
+			</p>
+		   
+			</div>
+		</form>
+		<?php
+	}
+
 }
 ?>

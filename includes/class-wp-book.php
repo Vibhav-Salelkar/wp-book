@@ -170,6 +170,10 @@ class Wp_Book {
 		//hooks for registering custom table in meta
 		$this->loader->add_action( 'init', $plugin_admin, 'book_register_custom_table' );
         $this->loader->add_action( 'switch_blog', $plugin_admin, 'book_register_custom_table' );
+		//register settings
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'wb_register_settings' );
+		//creates admin option page
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wb_custom_settings_page' );
 	}
 
 	/**
