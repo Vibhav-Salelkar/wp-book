@@ -165,6 +165,11 @@ class Wp_Book {
 		/* Fire our meta box setup function on the book editor screen. */
 		$this->loader->add_action( 'load-post.php', $plugin_admin, 'wb_book_meta_boxes_setup' );
 		$this->loader->add_action( 'load-post-new.php', $plugin_admin, 'wb_book_meta_boxes_setup' );
+		//runs when post is saved
+		$this->loader->add_action('save_post', $plugin_admin, 'wb_save_book_details');
+		//hooks for registering custom table in meta
+		$this->loader->add_action( 'init', $plugin_admin, 'book_register_custom_table' );
+        $this->loader->add_action( 'switch_blog', $plugin_admin, 'book_register_custom_table' );
 	}
 
 	/**

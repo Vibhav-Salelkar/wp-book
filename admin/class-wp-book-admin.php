@@ -178,7 +178,10 @@ class Wp_Book_Admin {
 	}
 
 	/* Display the book meta box. */
-	public function wb_about_book_meta_box( $post ) { ?>
+	public function wb_about_book_meta_box( $post ) { 
+		
+	
+		?>
 	
 		<?php wp_nonce_field( basename( __FILE__ ), 'wb_about_book_nonce' ); ?>
 	  
@@ -209,5 +212,79 @@ class Wp_Book_Admin {
 		</p>
 	  <?php 
 	  }
+
+	  public function wb_save_book_details( $post_id ) {
+		
+		if(! isset( $_POST['wb_about_book_nonce']) || !wp_verify_nonce( $_POST['wb_about_book_nonce'], basename( __FILE__ ) )){
+			return $post_id;
+		}
+
+		$author_name = sanitize_text_field( $_POST[ 'wb-book-author' ] );
+        $price       = sanitize_text_field( $_POST[ 'wb-book-price' ] );
+        $publisher   = sanitize_text_field( $_POST[ 'wb-book-publisher' ] );
+        $year        = sanitize_text_field( $_POST[ 'wb-book-year' ] );
+        $edition     = sanitize_text_field( $_POST[ 'wb-book-edition' ] );
+
+		$all_info = array(
+            'author_name' => $author_name,
+            'price'       => $price,
+            'publisher'   => $publisher,
+            'year'        => $year,
+            'edition'     => $edition
+        );
+
+		update_metadata( 'book', $post_id, '_book_details_key', $all_info );
+
+
+		// if( isset( $_POST['wb-book-price'])) {
+		// 	update_metadata('book', $post_id, 'wb-book-price', sanitize_text_field( $_POST['wb-book-price'] ));
+		// }
+
+		// if( isset( $_POST['wb-book-publisher'])) {
+		// 	update_metadata('book', $post_id, 'wb-book-publisher', sanitize_text_field( $_POST['wb-book-publisher'] ));
+		// }
+
+		// if( isset( $_POST['wb-book-year'])) {
+		// 	update_metadata('book', $post_id, 'wb-book-year', sanitize_text_field( $_POST['wb-book-year'] ));
+		// }
+
+		// if( isset( $_POST['wb-book-edition'])) {
+		// 	update_metadata('book', $post_id, 'wb-book-edition', sanitize_text_field( $_POST['wb-book-edition'] ));
+		// }
+	  }
+
+	  public function book_create_custom_table() {
+
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        $table_name = $wpdb->prefix . 'book_details_meta';
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
+            $query = "CREATE TABLE " . 
+                $table_name . "(
+                meta_id bigint(20) NOT NULL AUTO_INCREMENT,
+                bookdetails_id bigint(20) NOT NULL DEFAULT '0',
+                meta_key varchar(255) DEFAULT NULL,
+                meta_value longtext,
+                PRIMARY KEY  (meta_id),
+                KEY bookdetails_id (bookdetails_id),
+                KEY meta_key (meta_key)
+            )" . $charset_collate . ";";
+
+            dbDelta( $query );
+        }
+	  }
+
+	  public function book_register_custom_table() {
+
+        global $wpdb;
+
+        $wpdb->bookdetailsmeta = $wpdb->prefix . 'book_details_meta';
+        $wpdb->tables[] = 'book_details_meta';
+        
+        return;
+    }
 }
 ?>
