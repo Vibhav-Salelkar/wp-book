@@ -20,7 +20,14 @@
  * @subpackage Wp_Book/admin
  * @author     Vibhav Salelkar <salelkarvibhav@gmail.com>
  */
-class Wp_Book_Admin {
+
+ /***
+  * includes
+  */
+//for widgets.php
+ require_once( plugin_dir_path( dirname( __FILE__ )).'includes/widgets.php');
+
+ class Wp_Book_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -375,7 +382,7 @@ class Wp_Book_Admin {
 
 	public function wb_display_shortcode($args) {
 		$wb_query = new WP_Query( $args );
-		
+
 		if( $wb_query->have_posts() ) {
 			while($wb_query->have_posts()) {
 				$wb_query->the_post();
@@ -437,7 +444,9 @@ class Wp_Book_Admin {
 		add_shortcode( 'book', array($this,'wb_render_shortcode') );
 	}
 
-	
+	public function wb_register_widget() {
+		register_widget('Wb_widget');
+	}
 
 }
 ?>
