@@ -178,6 +178,8 @@ class Wp_Book {
 		$this->loader->add_action('init', $plugin_admin, 'wb_register_shortcode');
 		//register widget
 		$this->loader->add_action( 'widgets_init', $plugin_admin, 'wb_register_widget' );
+		//dashboard widget
+		$this->loader->add_action( 'wp_dashboard_setup', $plugin_admin, 'wb_register_dashboard_widget' );
 	}
 
 	/**

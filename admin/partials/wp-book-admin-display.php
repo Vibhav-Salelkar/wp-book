@@ -71,6 +71,42 @@ function wb_display_shortcode($args) {
     }
     wp_reset_query();
 }
+
+
+function wb_dash_display() {
+    $books_categories = get_terms( array(
+        'taxonomy' => 'book',
+        'hide_empty' => false,
+        'order' => 'DESC',
+        'orderby' => 'count',
+        'number' => '5'
+    ));
+
+    if(! empty($books_categories)) {
+        ?>
+        <h2>Top 5 Categories</h2>
+        <ul>
+        <?php
+        foreach($books_categories as $category) {
+            ?>
+            <li>
+                <span>Category: <a href="<?php echo get_category_link($category->term_id) ?>"alt="<?php echo $category->name ?>" >
+                <?php echo $category->name ?></span>
+                </a>
+                <span>Count: <?php echo $category->count ?></span>
+            </li>
+            <?php
+        }
+        ?>
+        </ul>
+        <?php
+    }else {
+        ?>
+        <p> <?php __('No categories Found','wb_domain') ?> </p>
+        <?php
+    }
+}
+
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

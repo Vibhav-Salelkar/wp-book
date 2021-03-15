@@ -389,5 +389,13 @@
 		register_widget('Wb_widget');
 	}
 
+	public function wb_register_dashboard_widget() {
+		wp_add_dashboard_widget(
+			'wb_dashboard_widget',                          // Widget slug.
+			esc_html__( 'Top 5 book categories', 'wb_domain' ), // Title.
+			'wb_dash_display'                    // Display function.
+		); 
+	}
+
 }
 ?>
