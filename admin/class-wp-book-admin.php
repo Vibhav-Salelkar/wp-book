@@ -179,8 +179,8 @@ class Wp_Book_Admin {
 
 	/* Display the book meta box. */
 	public function wb_about_book_meta_box( $post ) { 
-		
-	
+
+			$all_details= get_metadata('bookdetails',$post->ID,'_book_details_key')[0];
 		?>
 	
 		<?php wp_nonce_field( basename( __FILE__ ), 'wb_about_book_nonce' ); ?>
@@ -188,27 +188,27 @@ class Wp_Book_Admin {
 		<p>
 		  <label for="wb-book-author"><?php _e( "Author Name", 'wb_domain' ); ?></label>
 		  <br />
-		  <input class="widefat" type="text" name="wb-book-author" id="wb-book-author" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_author', true ) ); ?>" size="30" />
+		  <input class="widefat" type="text" name="wb-book-author" id="wb-book-author" value="<?php echo esc_attr($all_details['author_name']); ?>" size="30" />
 		</p>
 		<p>
 		  <label for="wb-book-price"><?php _e("Price", 'wb_domain' ); ?></label>
 		  <br />
-		  <input class="widefat" type="text" name="wb-book-price" id="wb-book-price" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_price', true ) ); ?>" size="30" />
+		  <input class="widefat" type="text" name="wb-book-price" id="wb-book-price" value="<?php echo esc_attr($all_details['price']); ?>" size="30" />
 		</p>
 		<p>
 		  <label for="wb-book-publisher"><?php _e( "Publisher", 'wb_domain' ); ?></label>
 		  <br />
-		  <input class="widefat" type="text" name="wb-book-publisher" id="wb-book-publisher" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_publisher', true ) ); ?>" size="30" />
+		  <input class="widefat" type="text" name="wb-book-publisher" id="wb-book-publisher" value="<?php echo esc_attr($all_details['publisher']); ?>" size="30" />
 		</p>
 		<p>
 		  <label for="wb-book-year"><?php _e( "Year", 'wb_domain' ); ?></label>
 		  <br />
-		  <input class="widefat" type="text" name="wb-book-year" id="wb-book-year" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_year', true ) ); ?>" size="30" />
+		  <input class="widefat" type="text" name="wb-book-year" id="wb-book-year" value="<?php echo esc_attr($all_details['year']); ?>" size="30" />
 		</p>
 		<p>
 		  <label for="wb-book-edition"><?php _e( "Edition", 'wb_domain' ); ?></label>
 		  <br />
-		  <input class="widefat" type="text" name="wb-book-edition" id="wb-book-edition" value="<?php echo esc_attr( get_post_meta( $post->ID, 'wb_book_edition', true ) ); ?>" size="30" />
+		  <input class="widefat" type="text" name="wb-book-edition" id="wb-book-edition" value="<?php echo esc_attr($all_details['edition']); ?>" size="30" />
 		</p>
 	  <?php 
 	  }
@@ -233,24 +233,8 @@ class Wp_Book_Admin {
             'edition'     => $edition
         );
 
-		update_metadata( 'book', $post_id, '_book_details_key', $all_info );
+		update_metadata( 'bookdetails', $post_id, '_book_details_key', $all_info );
 
-
-		// if( isset( $_POST['wb-book-price'])) {
-		// 	update_metadata('book', $post_id, 'wb-book-price', sanitize_text_field( $_POST['wb-book-price'] ));
-		// }
-
-		// if( isset( $_POST['wb-book-publisher'])) {
-		// 	update_metadata('book', $post_id, 'wb-book-publisher', sanitize_text_field( $_POST['wb-book-publisher'] ));
-		// }
-
-		// if( isset( $_POST['wb-book-year'])) {
-		// 	update_metadata('book', $post_id, 'wb-book-year', sanitize_text_field( $_POST['wb-book-year'] ));
-		// }
-
-		// if( isset( $_POST['wb-book-edition'])) {
-		// 	update_metadata('book', $post_id, 'wb-book-edition', sanitize_text_field( $_POST['wb-book-edition'] ));
-		// }
 	  }
 
 	  public function book_create_custom_table() {
@@ -277,7 +261,7 @@ class Wp_Book_Admin {
         }
 	  }
 
-	  public function book_register_custom_table() {
+	  public function wb_register_custom_table() {
 
         global $wpdb;
 

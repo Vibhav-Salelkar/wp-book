@@ -168,7 +168,7 @@ class Wp_Book {
 		//runs when post is saved
 		$this->loader->add_action('save_post', $plugin_admin, 'wb_save_book_details');
 		//hooks for registering custom table in meta
-		$this->loader->add_action( 'init', $plugin_admin, 'book_register_custom_table' );
+		$this->loader->add_action( 'init', $plugin_admin, 'wb_register_custom_table' );
         $this->loader->add_action( 'switch_blog', $plugin_admin, 'book_register_custom_table' );
 		//register settings
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wb_register_settings' );
