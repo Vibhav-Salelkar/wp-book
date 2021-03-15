@@ -174,6 +174,8 @@ class Wp_Book {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'wb_register_settings' );
 		//creates admin option page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'wb_custom_settings_page' );
+		//creates shortcode
+		$this->loader->add_action('init', $plugin_admin, 'wb_register_shortcode');
 	}
 
 	/**

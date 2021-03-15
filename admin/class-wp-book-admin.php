@@ -117,7 +117,7 @@ class Wp_Book_Admin {
 	public function wb_register_taxonomy_book() {
 		$labels = array(
 			'name'              => _x( 'Book Category', 'taxonomy general name' ),
-			'singular_name'     => _x( 'Book', 'taxonomy singular name' ),
+			'singular_name'     => _x( 'Book Category', 'taxonomy singular name' ),
 			'search_items'      => __( 'Search Book Categories' ),
 			'all_items'         => __( 'All Book Categories' ),
 			'parent_item'       => __( 'Parent Book Category' ),
@@ -323,6 +323,121 @@ class Wp_Book_Admin {
 		</form>
 		<?php
 	}
+
+	public function wb_render_shortcode( $attr ) {
+		$attr = shortcode_atts(
+			array(
+				'id'=>'',
+				'author_name'=>'',
+				'year'=>'',
+				'category'=>'',
+				'tag'=>'',
+				'publisher'=>''
+			),
+			$attr, 
+			'book'
+		);
+
+		$args = array(
+			'post_type' => 'book',
+			'post_status' => 'publish',
+			'author' => $attr['author_name']
+		);
+
+		if($attr['id'] != '') {
+			$args['id'] = $attr['id'];
+		}
+
+		if($attr['category'] != '') {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => 'book',
+					'terms' => array( $attr['category'] ),
+					'field' => 'name',
+					'operator' => 'IN'
+				)
+			);
+		}
+
+		if($attr['tag'] != '') {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => 'book tags',
+					'terms' => array($attr['tag']),
+					'field' => 'name',
+					'operator' => 'IN'
+				)
+			);
+		}
+
+		return wb_display_shortcode($args);
+	}
+
+	public function wb_display_shortcode($args) {
+		$wb_query = new WP_Query( $args );
+		
+		if( $wb_query->have_posts() ) {
+			while($wb_query->have_posts()) {
+				$wb_query->the_post();
+
+				$wb_author_name = get_metadata('bookdetails', get_the_id(), '_book_details_key')[0]['author_name'];
+				$wb_year = get_metadata('bookdetails', get_the_id(), '_book_details_key')[0]['year'];
+				$wb_publisher = get_metadata('bookdetails', get_the_id(), '_book_details_key')[0]['publisher'];
+				
+				?>
+				<ul>
+					<?php
+					if(get_the_title() != ''){
+						?>
+						<li>Title: <a href="<?php get_post_permalink();?>"><?php echo get_the_title();?></a></li>
+						<?php
+					}
+					?>
+					<?php
+					if($wb_author_name != ''){
+						?>
+						<li>Author: <?php echo $wb_author_name?></li>
+						<?php
+					}
+					?>
+					<?php
+					if($wb_year != ''){
+						?>
+						<li>Year: <?php echo $wb_year ?></li>
+						<?php
+					}
+					?>
+					<?php
+					if($wb_publisher != ''){
+						?>
+						<li>Publisher: <?php echo $wb_publisher?></li>
+						<?php
+					}
+					?>
+					<?php
+					if( get_the_content() != ''){
+						?>
+						<li>Content: <?php echo get_the_content();?></li>
+						<?php
+					}
+					?>
+				</ul>
+				<?php
+			}
+			wp_reset_postdata();
+		}else {
+			?>
+			<p>No books Found</p>
+			<?php
+		}
+		wp_reset_query();
+	}
+
+	public function wb_register_shortcode() {
+		add_shortcode( 'book', array($this,'wb_render_shortcode') );
+	}
+
+	
 
 }
 ?>
