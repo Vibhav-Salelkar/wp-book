@@ -27,7 +27,7 @@ class Wb_widget extends WP_Widget {
                     if ( isset( $instance[ 'title' ] ) ) {
                         $title = $instance[ 'title' ];
                     } else {
-                        $title = 'Books Portfolio';
+                        $title = 'Books Section';
                     }
                     echo $title;
                 ?>
@@ -70,7 +70,7 @@ class Wb_widget extends WP_Widget {
             <?php 
             
         }else{
-            echo esc_html__( 'No posts selected!', 'text_domain' );	
+            echo esc_html__( 'No posts selected!', 'wb_domain' );	
         }
         echo $args[ 'after_widget' ];
     }
@@ -81,7 +81,7 @@ class Wb_widget extends WP_Widget {
         $title = $instance[ 'title' ];
     }
     else {
-        $title = __( 'Books', 'wb_domain' );
+        $title = __( 'Books Section', 'wb_domain' );
     }
     // Widget admin form
     ?>
